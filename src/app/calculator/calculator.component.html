@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="calculator">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <app-calculator-display></app-calculator-display>
+        </div>
+      </div>
+      <div class="row" *ngFor="let buttonRow of buttonData">
+        <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" *ngFor="let button of buttonRow">
+          <app-calculator-button text="{{ button.text }}" buttonClass="{{ button.class }}"></app-calculator-button>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>

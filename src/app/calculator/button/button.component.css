@@ -1,0 +1,70 @@
+.key {
+	cursor: pointer;
+	
+	background: white;
+	border-radius: 3px;
+	box-shadow: 0px 4px #6082B2;
+	
+	margin: 0 7px 11px 0;
+	
+	color: black;
+	line-height: 36px;
+	text-align: center;
+	
+	user-select: none;
+	
+	transition: all 0.2s ease;
+}
+
+.operator {
+	background: #9bcc91;
+	box-shadow: 0px 4px #66bd54;
+	margin-right: 0;
+}
+
+.eval {
+	background: #f1ff92;
+	box-shadow: 0px 4px #9da853;
+}
+
+.clear {
+	background: #ff9fa8;
+	box-shadow: 0px 4px #ff7c87;
+}
+
+.key:hover {
+	background: #9c89f6;
+	box-shadow: 0px 4px #6b54d3;
+	color: white;
+}
+
+.operator:hover {
+	background: #1d9440;
+	box-shadow: 0px 4px #0b7519;
+}
+
+.eval:hover {
+	background: #abb850;
+	box-shadow: 0px 4px #717a33;
+}
+
+.clear:hover {
+	background: #f68991;
+	box-shadow: 0px 4px #d3545d;
+}
+
+.key:active {
+	box-shadow: 0px 0px #6b54d3;
+}
+
+.operator:active {
+	box-shadow: 0px 0px #0b7519;
+}
+
+.eval:active {
+	box-shadow: 0px 0px #717a33;
+}
+
+.clear:active {
+	box-shadow: 0px 0px #d3545d;
+}
