@@ -12,6 +12,9 @@
             "element",
             "app",
             "kebab-case"
-        ]
+        ],
+        "i18n": [
+            false
+          ]
     }
 }

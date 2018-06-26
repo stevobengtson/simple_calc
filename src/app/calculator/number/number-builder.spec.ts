@@ -1,6 +1,6 @@
 import { NumberBuilder } from './number-builder';
 
-describe('Builder', () => {
+describe('Number Builder', () => {
   let builder: NumberBuilder;
 
   beforeEach(() => {

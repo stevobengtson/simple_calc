@@ -5,17 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "type": "node",
             "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
+            "name": "Launch via NPM",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "e2e",
+                "--",
+                "--inspect-brk",
+                "--port 4201"
+            ],
+            "port": 9229
         },
         {
             "type": "chrome",
             "request": "attach",
-            "name": "Attach to Chrome",
-            "port": 9222,
+            "name": "Attach to Karma Chrome",
+            "address": "localhost",
+            "port": 9876,
             "webRoot": "${workspaceFolder}"
         }
     ]

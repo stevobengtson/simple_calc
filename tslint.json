@@ -2,7 +2,5 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
-  "extends": ["angular-tslint-rules"],
-  "rules": {
-  }
+  "extends": ["angular-tslint-rules"]
 }

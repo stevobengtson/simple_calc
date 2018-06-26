@@ -1,71 +1,107 @@
-import { Component, OnInit } from '@angular/core';
-import { NumberBuilder } from './number-builder';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { OperationTypes } from './structures/operation-types';
 import { OperationManagerService } from './operation/operation-manager.service';
+import { HistoryService } from './history/history.service';
+import { Action } from './structures/action';
+import { Subscription } from 'rxjs';
+
+class ButtonData {
+  text: string;
+  class: string;
+  operation: OperationTypes;
+}
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.css']
 })
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent implements OnInit, OnDestroy {
   buttonData = [
     [
-      { text: 'CE', class: 'clear' },
-      { text: 'C', class: 'clear' },
-      { text: '&larr;', class: 'operator' },
-      { text: '&divide;', class: 'operator' }
+      { text: '', class: '', operation: OperationTypes.NONE },
+      { text: '', class: '', operation: OperationTypes.NONE },
+      { text: '&larr;', class: 'clear', operation: OperationTypes.DELETE },
+      { text: '&divide;', class: 'operator', operation: OperationTypes.DIVIDE }
     ],
     [
-      { text: '7', class: '' },
-      { text: '8', class: '' },
-      { text: '9', class: '' },
-      { text: '&divide;', class: 'operator' }
+      { text: '7', class: '', operation: OperationTypes.NUMBER },
+      { text: '8', class: '', operation: OperationTypes.NUMBER },
+      { text: '9', class: '', operation: OperationTypes.NUMBER },
+      { text: '&times;', class: 'operator', operation: OperationTypes.MULTIPLY }
     ],
     [
-      { text: '4', class: '' },
-      { text: '5', class: '' },
-      { text: '6', class: '' },
-      { text: 'X', class: 'operator' }
+      { text: '4', class: '', operation: OperationTypes.NUMBER },
+      { text: '5', class: '', operation: OperationTypes.NUMBER },
+      { text: '6', class: '', operation: OperationTypes.NUMBER },
+      { text: '-', class: 'operator', operation: OperationTypes.SUBTRACT }
     ],
     [
-      { text: '1', class: '' },
-      { text: '2', class: '' },
-      { text: '3', class: '' },
-      { text: '+', class: 'operator' }
+      { text: '1', class: '', operation: OperationTypes.NUMBER },
+      { text: '2', class: '', operation: OperationTypes.NUMBER },
+      { text: '3', class: '', operation: OperationTypes.NUMBER },
+      { text: '+', class: 'operator', operation: OperationTypes.ADD }
     ],
     [
-      { text: '+/-', class: 'operator' },
-      { text: '0', class: '' },
-      { text: '.', class: '' },
-      { text: '=', class: 'eval' }
+      { text: 'C', class: 'clear', operation: OperationTypes.CLEAR },
+      { text: '0', class: '', operation: OperationTypes.NUMBER },
+      { text: '.', class: '', operation: OperationTypes.DECIMAL },
+      { text: '=', class: 'eval', operation: OperationTypes.EXECUTE }
     ]
   ];
 
-  private _numberBuilder = new NumberBuilder();
+  private subscription: Subscription;
 
-  // TODO: Need service to keep history of operations (to be shown in another component)
-  constructor(private _operationManagerService: OperationManagerService) {}
+  constructor(
+    private _operateManagerService: OperationManagerService,
+    private _historyService: HistoryService
+  ) { }
 
   ngOnInit(): void {
-    const getRandomInt = (min: number, max: number) => {
-      min = Math.ceil(min);
-      max = Math.floor(max);
+    this.subscription = this._operateManagerService.action$.subscribe((action: Action) => {
+      this._historyService.addEntry(action);
+    });
+  }
 
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-    setInterval(() => {
-      const randValue = getRandomInt(0, 10);
-      if (randValue === 10)
-        this._numberBuilder.pushDecimal();
-      else
-        this._numberBuilder.pushNumber(randValue);
-    }, 123);
+  canShowButton(button: ButtonData): boolean {
+    return (button.operation !== OperationTypes.NONE);
+  }
 
-    setInterval(() => {
-      const randOperation = getRandomInt(0, 4);
-      this._operationManagerService.runOperation(randOperation, this._numberBuilder.value);
-      this._numberBuilder.clear();
-    }, 1000);
+  doOperation(operation: OperationTypes, text: string): void {
+    this._operateManagerService.runOperation(operation, parseInt(text, 10));
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if (event.key >= '0' && event.key <= '9')
+      this._operateManagerService.runOperation(OperationTypes.NUMBER, parseInt(event.key, 10));
+    else if (event.key === 'Enter')
+      this._operateManagerService.runOperation(OperationTypes.EXECUTE);
+    else if (event.code === 'KeyC')
+      this._operateManagerService.runOperation(OperationTypes.CLEAR);
+    else if (event.key === '/' || event.key === '\\')
+      this._operateManagerService.runOperation(OperationTypes.DIVIDE);
+    else if (event.key === '*')
+      this._operateManagerService.runOperation(OperationTypes.MULTIPLY);
+    else if (event.key === '-')
+      this._operateManagerService.runOperation(OperationTypes.SUBTRACT);
+    else if (event.key === '+')
+      this._operateManagerService.runOperation(OperationTypes.ADD);
+    else if (event.key === '.')
+      this._operateManagerService.runOperation(OperationTypes.DECIMAL);
+    else if (event.code === 'Delete' || event.code === 'Backspace')
+      this._operateManagerService.runOperation(OperationTypes.DELETE);
+  }
+
+  trackerRow(index: number, item: Array<any>): number {
+    return index;
+  }
+
+  trackerButton(index: number, item: any): number {
+    return index;
   }
 }

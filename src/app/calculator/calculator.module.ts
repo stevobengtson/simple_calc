@@ -6,6 +6,7 @@ import { CalculatorRoutingModule } from './calculator-routing.module';
 import { CalculatorComponent } from './calculator.component';
 import { ButtonComponent } from './button/button.component';
 import { DisplayComponent } from './display/display.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { DisplayComponent } from './display/display.component';
   declarations: [
     ButtonComponent,
     CalculatorComponent,
-    DisplayComponent
+    DisplayComponent,
+    HistoryComponent
   ]
 })
 export class CalculatorModule { }

@@ -8,6 +8,7 @@ describe('CalculatorModule', () => {
   });
 
   it('should create an instance', () => {
-    expect(calculatorModule).toBeTruthy();
+    expect(calculatorModule)
+      .toBeTruthy();
   });
 });

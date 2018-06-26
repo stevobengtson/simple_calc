@@ -1,0 +1,8 @@
+.history-log {
+  background-color: #ECF05C;
+}
+
+.torn-paper {
+  height: 96px;
+  background-image: url(/assets/images/torn-paper.png);
+}
