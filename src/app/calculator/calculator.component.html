@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-sm-8">
+    <div class="calculator">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <app-calculator-display></app-calculator-display>
+        </div>
+      </div>
+      <div class="row" *ngFor="let buttonRow of buttonData; trackBy: trackerRow">
+        <div class="col" *ngFor="let button of buttonRow; trackBy: trackerButton">
+          <app-calculator-button *ngIf="canShowButton(button)" text="{{ button.text }}" buttonClass="{{ button.class }}" (buttonPressed)="doOperation(button.operation, button.text)"></app-calculator-button>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <app-calculator-history></app-calculator-history>
+  </div>  
+</div>
